@@ -1,4 +1,4 @@
-// DeLanceur.jsx
+/* DeLanceur.jsx
 import React from 'react';
 
 const DeLanceur = ({ onLancer }) => {
@@ -9,10 +9,10 @@ const DeLanceur = ({ onLancer }) => {
 
   return (
     <div>
-      <button onClick={lancer}>🎲 Lancer les dés</button>
+      <button onClick={lancer}> Lancer les dés</button>
     </div>
   );
 };
 
-export default DeLanceur;
+export default DeLanceur; */
 

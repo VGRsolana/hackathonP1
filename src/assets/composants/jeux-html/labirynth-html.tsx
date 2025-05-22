@@ -1,6 +1,8 @@
 import { Stage, Layer, Rect, Circle } from 'react-konva';
 import React, { useEffect, useState } from 'react';
-import DeLanceur from './lancer.tsx';
+import DiceRoller from '../dés.tsx';
+import Popup from './pop-up-html.tsx';
+
 
 const CASE_SIZE = 50;
 const NB_LIGNES = 10;
@@ -35,50 +37,54 @@ const trouverPositionDepart = () => {
       }
     }
   }
-  return { x: 0, y: 0 }; // valeur par défaut de secours
+  return { x: 0, y: 0 };
 };
 
 const Labyrinthe = () => {
   const [perso, setPerso] = useState(trouverPositionDepart());
   const [mouvementsRestants, setMouvementsRestants] = useState(0);
-  const [dernierLancer, setDernierLancer] = useState(null);
-  console.log(perso);
-  
+  const [dernierLancer, setDernierLancer] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [nbErreurs, setNbErreurs] = useState(0);
+  const [reachedEnd, setReachedEnd] = useState(false);
 
-  const handleLancer = (resultat) => {
-    console.log(resultat);
-    
+  const handleLancer = (resultat: number) => {
     setMouvementsRestants(resultat);
     setDernierLancer(resultat);
-
+    setShowPopup(false);
+    setNbErreurs((prev) => prev); // ne reset pas, sauf si tu veux
   };
-    
-  const deplacer = (dx, dy) => {
+
+  const handleWrongAnswer = () => {
+    setNbErreurs((prev) => prev + 1);
+  };
+
+  const deplacer = (dx: number, dy: number) => {
     const newX = perso.x + dx;
     const newY = perso.y + dy;
-    
-  console.log(mouvementsRestants);
-  
-  if (
-    mouvementsRestants > 0 &&
-    newX >= 0 &&
-    newX < NB_COLONNES &&
-    newY >= 0 &&
-    newY < NB_LIGNES &&
-    grille[newY][newX] === 'path' || grille[newY][newX] === 'bonus' || grille[newY][newX] === 'end'
-    ) {
-      console.log("de");
-      
+    const typeCase = grille[newY]?.[newX];
+
+    const estValide =
+      newX >= 0 &&
+      newX < NB_COLONNES &&
+      newY >= 0 &&
+      newY < NB_LIGNES &&
+      (typeCase === 'path' || typeCase === 'bonus' || typeCase === 'end');
+
+    if (mouvementsRestants > 0 && estValide) {
       setPerso({ x: newX, y: newY });
-      setMouvementsRestants((prev) => prev - 1);;
+      setMouvementsRestants((prev) => prev - 1);
+
+      if (typeCase === 'end') {
+        setReachedEnd(true);
+      }
+    } else {
+      setNbErreurs((prev) => prev + 1);
     }
   };
 
-  // Écoute du clavier
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      console.log(e.key);
-      
+    const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case 'ArrowUp':
           deplacer(0, -1);
@@ -92,21 +98,37 @@ const Labyrinthe = () => {
         case 'ArrowRight':
           deplacer(1, 0);
           break;
-        default:
-          break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [perso, deplacer]);
+  }, [perso, mouvementsRestants]);
+
+  useEffect(() => {
+    if (mouvementsRestants === 0 && dernierLancer !== null) {
+      setShowPopup(true);
+    }
+  }, [mouvementsRestants, dernierLancer]);
 
   return (
     <div>
-      <DeLanceur onLancer={handleLancer} />
+      <DiceRoller onRoll={handleLancer} />
+
       {dernierLancer !== null && (
-        <p>Dé : {dernierLancer} | Mouvements restants : {mouvementsRestants}</p>
+        <p>🎲 Dé : {dernierLancer} | 🚶 Mouvements restants : {mouvementsRestants}</p>
       )}
+
+      <p>❌ Erreurs : {nbErreurs}</p>
+      {reachedEnd && <p>🎉 Bravo, vous avez atteint la sortie du labyrinthe !</p>}
+
+      {showPopup && (
+        <Popup
+          onClose={() => setShowPopup(false)}
+          onWrongAnswer={handleWrongAnswer}
+        />
+      )}
+
       <Stage width={NB_COLONNES * CASE_SIZE} height={NB_LIGNES * CASE_SIZE}>
         <Layer>
           {grille.map((ligne, y) =>
@@ -135,3 +157,5 @@ const Labyrinthe = () => {
 };
 
 export default Labyrinthe;
+
+
