@@ -5,6 +5,8 @@ import Labyrinthe from "./assets/composants/jeux-html/labirynth-html.js";
 import Regle from "./assets/pages/rêgle.js";
 import Labyrinthe1 from "./assets/composants/jeux-API/labirynth-API.js";
 import Labyrinthe2 from "./assets/composants/jeux-React/labirynth-React.js";
+import Cours from "./assets/pages/cours.js";
+
 
 
 const Routes = createBrowserRouter([
@@ -26,6 +28,10 @@ const Routes = createBrowserRouter([
       {
         element: <Labyrinthe2 />,
         path: "/Labyrinthe2",
+      },
+      {
+        element: <Cours />,
+        path: "/Cours",
       },
       {
         element: <Regle />,
