@@ -40,7 +40,7 @@ const trouverPositionDepart = () => {
   return { x: 0, y: 0 };
 };
 
-const Labyrinthe = () => {
+const Labyrinthe2 = () => {
   const [perso, setPerso] = useState(trouverPositionDepart());
   const [mouvementsRestants, setMouvementsRestants] = useState(0);
   const [dernierLancer, setDernierLancer] = useState<number | null>(null);
@@ -156,6 +156,6 @@ const Labyrinthe = () => {
   );
 };
 
-export default Labyrinthe;
+export default Labyrinthe2;
 
 
