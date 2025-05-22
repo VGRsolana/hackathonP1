@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { Outlet } from 'react-router'
 import './App.css'
 import React from 'react'
-import Labyrinthe from './assets/composants/labirynth'
+import Nav from './assets/composants/nav'
+
 
 function App() {
-  
+
 
   return (
     <>
-      <h1>code adventure</h1>
-      <Labyrinthe />
+      <Nav />
+
+      <Outlet />
     </>
   )
 }
