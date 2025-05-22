@@ -9,8 +9,28 @@ nav {
     align-items: center;
     justify-content: space-between;
     border: 3px solid;
+    background-color: white;
+}
+.green {
     border-color: #45c7a4;
+}
 
+.pink {
+    border-color: rgb(226, 103, 208);
+}
+
+.pink-button:hover{
+    background: rgb(226, 103, 208);
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    transform: scale(1.07) translateY(-5px);
+}
+
+.green-button:hover{
+    background: #45c7a4;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    transform: scale(1.07) translateY(-5px);
 }
 
 .divLogo {
@@ -46,11 +66,4 @@ nav {
     color: var(--text-color);
     border-radius: 0.8rem;
     transition: all .7s ease;
-}
-
-.n-btn:hover {
-    background: var(--main-color);
-    border: 1px solid var(--text-color);
-    color: var(--text-color);
-    transform: scale(1.07) translateY(-5px);
 }
