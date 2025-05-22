@@ -61,7 +61,7 @@ const DiceRoller: React.FC<DiceRollerProps> = ({ onRoll }) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <button onClick={rollDice}>🎲 Lancer les dés</button>
+      <button className='n-btn' onClick={rollDice}>🎲 Lancer les dés</button>
     </div>
   );
 };

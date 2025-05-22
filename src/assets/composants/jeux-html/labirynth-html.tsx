@@ -2,6 +2,7 @@ import { Stage, Layer, Rect, Circle } from 'react-konva';
 import React, { useEffect, useState } from 'react';
 import DiceRoller from '../dés.tsx';
 import Popup from './pop-up-html.tsx';
+import "./Labyrinthe.css"
 
 
 const CASE_SIZE = 50;
@@ -22,11 +23,11 @@ const grille = [
 ];
 
 const couleursParType = {
-  wall: '#444',
-  path: '#eee',
-  start: '#4caf50',
+  wall: '#050504',
+  path: '#FFFFFF',
+  start: '#FFFF00',
   end: '#f44336',
-  bonus: '#FFFF00'
+  bonus: '#45c7a4'
 };
 
 const trouverPositionDepart = () => {
@@ -112,15 +113,18 @@ const Labyrinthe = () => {
   }, [mouvementsRestants, dernierLancer]);
 
   return (
-    <div>
-      <DiceRoller onRoll={handleLancer} />
+    <div className='mainLabyrinthe'>
 
-      {dernierLancer !== null && (
-        <p>🎲 Dé : {dernierLancer} | 🚶 Mouvements restants : {mouvementsRestants}</p>
-      )}
+      <div className='divDés'>
 
-      <p>❌ Erreurs : {nbErreurs}</p>
-      {reachedEnd && <p>🎉 Bravo, vous avez atteint la sortie du labyrinthe !</p>}
+        {dernierLancer !== null && (
+          <p className='reponse'>🎲 Dé : {dernierLancer} <br /> <br /> 🚶 Mouvements restants : {mouvementsRestants}</p>
+        )}
+
+        <p className='reponse'>❌ Erreurs : {nbErreurs}</p>
+        {reachedEnd && <p className='reponse'>🎉 Bravo, vous avez atteint la sortie du labyrinthe !</p>}
+        <DiceRoller onRoll={handleLancer} />
+      </div>
 
       {showPopup && (
         <Popup
@@ -129,29 +133,31 @@ const Labyrinthe = () => {
         />
       )}
 
-      <Stage width={NB_COLONNES * CASE_SIZE} height={NB_LIGNES * CASE_SIZE}>
-        <Layer>
-          {grille.map((ligne, y) =>
-            ligne.map((type, x) => (
-              <Rect
-                key={`${x}-${y}`}
-                x={x * CASE_SIZE}
-                y={y * CASE_SIZE}
-                width={CASE_SIZE}
-                height={CASE_SIZE}
-                fill={couleursParType[type] || '#ccc'}
-                stroke="#000"
-              />
-            ))
-          )}
-          <Circle
-            x={perso.x * CASE_SIZE + CASE_SIZE / 2}
-            y={perso.y * CASE_SIZE + CASE_SIZE / 2}
-            radius={CASE_SIZE / 3}
-            fill="blue"
-          />
-        </Layer>
-      </Stage>
+      <div className='divLab'>
+        <Stage width={NB_COLONNES * CASE_SIZE} height={NB_LIGNES * CASE_SIZE}>
+          <Layer>
+            {grille.map((ligne, y) =>
+              ligne.map((type, x) => (
+                <Rect
+                  key={`${x}-${y}`}
+                  x={x * CASE_SIZE}
+                  y={y * CASE_SIZE}
+                  width={CASE_SIZE}
+                  height={CASE_SIZE}
+                  fill={couleursParType[type] || '#ccc'}
+                  stroke="#000"
+                />
+              ))
+            )}
+            <Circle
+              x={perso.x * CASE_SIZE + CASE_SIZE / 2}
+              y={perso.y * CASE_SIZE + CASE_SIZE / 2}
+              radius={CASE_SIZE / 3}
+              fill="blue"
+            />
+          </Layer>
+        </Stage>
+      </div>
     </div>
   );
 };
