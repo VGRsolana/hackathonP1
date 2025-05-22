@@ -1,0 +1,28 @@
+.mainLabyrinthe {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+}
+
+.divDés {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border: 3px solid;
+    border-color: #45c7a4;
+    border-radius: 0.9rem;
+    padding: 12px;
+}
+
+.reponse {
+    text-align: center;
+    font-size: var(--p-font);
+    color: var(--other-color);
+    font-weight: 600;
+}
+
+.divLab {}
